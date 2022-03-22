@@ -1,0 +1,14 @@
+.register--image {
+    width: 40vw;
+    height: 90vh;
+}
+
+
+.login--form {
+    position: relative;
+    top: 4rem;
+}
+
+.font-bold {
+    font-weight: 700;
+}
