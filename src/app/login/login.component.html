@@ -2,26 +2,48 @@
     <div class="col">
         <div class="mx-auto" style="width: 28rem; height: 80vh;">
             <div class="ml-4 mt-5">
-                <h2>Logo here</h2>
+                <img src="../../assets/undraw-login.svg" alt="logo" width="30px" height="30px">
             </div>
 
             <div class="card-body login--form">
                 <h3>Sign In to X.</h3>
                 <!-- <p>Already have an account? <a href="/login">Log In</a></p> -->
-                <p>Don't have an account? <a href="/register">Create account</a></p>
+                <p>Don't have an account? <a style="color: #00BFA6;" href="/register">Create account</a></p>
 
-                <form>
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                     <div class="form-group">
                         <label for="exampleInputEmail1" class="font-bold">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                            placeholder="Enter email">
-
+                        <div *ngIf="email">
+                            <input type="email" class="form-control" formControlName="email" id="exampleInputEmail1"
+                                aria-describedby="emailHelp" placeholder="Enter email">
+                            <small class="text-danger" *ngIf="email.errors?.['required'] && email.touched">Email is
+                                required.</small>
+                            <small class="text-danger" *ngIf="email.errors?.['email'] && email.touched">Email is
+                                invalid.</small>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1" class="font-bold">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        <div *ngIf="password">
+                            <input type="password"
+                                [ngClass]="password.invalid && password.touched ? 'border border-danger' : ''"
+                                class="form-control" formControlName="password" id="exampleInputPassword1"
+                                placeholder="Password">
+                            <small class="text-danger"
+                                *ngIf="password.errors?.['required'] && password.touched">Password is required.</small>
+                            <small class="text-danger"
+                                *ngIf="password.errors?.['minlength'] && password.touched">Password must be atleast 8
+                                characters long.</small>
+                            <small class="text-danger" *ngIf="password.errors?.['pattern'] && password.touched">Password
+                                must contain alphanumeric characters</small>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                    <button style="background: #00BFA6;" type="submit" class="btn btn-primary btn-block">
+                        <!-- <span class="d-flex justify-content-center" *ngIf="loading">
+                            <mat-spinner diameter="30"></mat-spinner>
+                        </span> -->
+                        Login
+                    </button>
                 </form>
             </div>
         </div>

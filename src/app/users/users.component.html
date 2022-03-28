@@ -1,4 +1,176 @@
 <app-navbar></app-navbar>
 <section class="container-fluid">
-    <p>users works!</p>
+    <!-- Button trigger modal -->
+    <div class="mt-4 mb-4">
+        <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleAddModal">
+                Add User
+            </button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New User</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form [formGroup]="addNewUserForm" (ngSubmit)="createUser()">
+                            <div class="form-group">
+                                <label for="exampleInputFirstName" class="font-bold">Name</label>
+                                <input type="text" class="form-control" formControlName="name" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp" placeholder="Enter Last Name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputFirstName" class="font-bold">Job</label>
+                                <input type="text" class="form-control" formControlName="job" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp" placeholder="Enter Job">
+                            </div>
+                            <div>
+                                <button style="background: #00BFA6;" type="submit" class="btn btn-primary btn-block">
+                                    Submit
+                                </button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div> 
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table mat-table [dataSource]="users" class="mat-elevation-z8">
+
+        <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef class="font-weight-bold"> Email </th>
+            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="first_name">
+            <th mat-header-cell *matHeaderCellDef class="font-weight-bold"> First Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.first_name}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="last_name">
+            <th mat-header-cell *matHeaderCellDef class="font-weight-bold"> Last Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.last_name}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="avatar">
+            <th mat-header-cell *matHeaderCellDef class="font-weight-bold"> Avatar </th>
+            <td mat-cell *matCellDef="let element">
+                <img class="user--image" [src]="element.avatar" alt="image">
+            </td>
+        </ng-container>
+
+        <!-- CRUD Actions Column -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="font-weight-bold"> Actions </th>
+            <td mat-cell *matCellDef="let element">
+                <!-- Button trigger modal -->
+                <button (click)="selectSingleUser(element)" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    Update User
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="exampleModalLabel">User Details</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form (ngSubmit)="editUser()">
+                                    <div class="form-group">
+                                        <label for="exampleInputFirstName" class="font-bold">First Name</label>
+                                        <input type="text" name="firstName" [(ngModel)]="firstName" class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" [value]="element.first_name"
+                                            placeholder="Enter First Name">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputFirstName" class="font-bold">Last Name</label>
+                                        <input type="text" class="form-control" name="lastName" [(ngModel)]="lastName" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" [value]="element.last_name"
+                                            placeholder="Enter Last Name">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="font-bold">Job</label>
+                                        <input type="email" class="form-control" name="newJob" [(ngModel)]="newJob" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" [value]="element.job"
+                                            placeholder="Enter Job">
+                                    </div>
+
+                                    
+                                    <button style="background: #00BFA6;" type="submit"
+                                        class="btn btn-primary btn-block">
+                                        Submit
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Delete user -->
+                <!-- Button trigger modal -->
+                <button (click)="removeUser(element)" type="button" class="btn btn-danger ml-2" data-toggle="modal" data-target="#exampleDeleteModal">
+                    Delete User
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleDeleteModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <h4>Are you sure that you want to delete the Item?</h4>
+
+                                <div class="d-flex justify-content-around">
+                                    <button type="button" (click)="confirmRemoveUser()" class="btn btn-secondary" data-dismiss="modal">Yes</button>
+                                    <button type="button" class="btn btn-primary">No</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div class="card pagination--wrapper">
+
+        <div class="d-flex justify-content-end align-items-center">
+            <button [disabled]="pageNumber == 1" (click)="fetchPrevPageData()" class="mr-2 btn btn-sm">
+                <mat-icon class="pl-1">arrow_back_ios</mat-icon>
+            </button>
+
+            <p class="mr-3 ml-2 mt-2">{{pageNumber}}</p>
+
+            <button [disabled]="totalPages == pageNumber" (click)="fetchNextPageData()" class="btn btn-sm">
+                <mat-icon class="pr-1">arrow_forward_ios</mat-icon>
+            </button>
+        </div>
+    </div>
 </section>

@@ -11,3 +11,11 @@
 .font-bold {
     font-weight: 700;
 }
+
+/* input.ng-invalid {
+    border: 2px solid red;
+}
+
+input.ng-valid {
+    border: 2px solid green;
+} */

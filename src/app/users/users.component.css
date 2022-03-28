@@ -1,0 +1,17 @@
+table {
+    width: 80%;
+    margin: .1rem auto;
+  }
+
+.user--image {
+    width: 70px;
+    height: 70px;
+}
+
+.pagination--wrapper {
+    width: 80%;
+    margin: 0 auto;
+    height: 3.5rem;
+    padding: .2rem .4rem;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
